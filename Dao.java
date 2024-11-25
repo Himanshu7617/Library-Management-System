@@ -46,7 +46,8 @@ public class Dao {
                     student_id INT NOT NULL, 
                     student_name VARCHAR(20) NOT NULL,
                     student_email VARCHAR(30) NOT NULL,
-                    issue_date DATE DEFAULT CURRENT_DATE
+                    issue_date DATE NOT NULL,
+                    return_date DATE DEFAULT CURRENT_DATE
                 );
             """;
 
