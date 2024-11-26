@@ -69,8 +69,7 @@ public class Main{
     admin_button.setBounds(300, 300, 100, 50);
     admin_button.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
-            main_window.dispose();
-            AdminUI.createAdminUI();
+            AdminUI.verifyUser();
         }
     });
 
@@ -79,6 +78,12 @@ public class Main{
     JButton student_button = new JButton();
     student_button.setText("Student");
     student_button.setBounds(600, 300, 100, 50);
+    student_button.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e){
+            main_window.dispose();
+            StudentUI.createStudentUI();
+        }
+    });
     
     main_window.add(admin_button);
     main_window.add(student_button);

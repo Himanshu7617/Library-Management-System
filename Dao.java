@@ -8,11 +8,10 @@ public class Dao {
 
 
     private static String UserTableQueryString = """
-                CREATE TABLE IF NOT EXISTS users (
+                CREATE TABLE IF NOT EXISTS admin_users (
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(30) NOT NULL,
                     email VARCHAR(60) UNIQUE NOT NULL, 
-                    role VARCHAR(10) NOT NULL DEFAULT 'student',
                     password VARCHAR(20)
                 );
             """;

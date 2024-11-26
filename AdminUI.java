@@ -18,7 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class AdminUI{
-
+    static String admin_user_ID = "";
+    static String admin_user_name = "";
+    static String admin_user_email = "";
 
 
     public static Connection createConnection(){
@@ -89,6 +91,40 @@ public class AdminUI{
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("error getting the books from the database");
+            e.printStackTrace();
+        }
+        return ans;
+    }
+ 
+    
+    public static ArrayList<ArrayList<String>> getAllUsers(Connection con){
+        String getSQLQuery = "SELECT id, name, email, password FROM admin_users ";
+
+        
+        ArrayList<ArrayList<String>> ans = new ArrayList<>();
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(getSQLQuery);
+
+            while(resultSet.next()){
+                ArrayList<String> temp = new ArrayList<>();
+                String id = String.valueOf(resultSet.getInt("id"));
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+
+                temp.add(id);
+                temp.add(name);
+                temp.add(email);
+                temp.add(password);
+
+                ans.add(temp);
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("error getting the admin users from the database");
             e.printStackTrace();
         }
         return ans;
@@ -244,6 +280,7 @@ public class AdminUI{
         }
     }
 
+
     
     public static void createAdminUI(){
 
@@ -285,9 +322,9 @@ public class AdminUI{
         JLabel user_name = new JLabel("Name : ");
         JLabel email = new JLabel("Email : ");
 
-        JTextField user_id_ans = new JTextField("1");
-        JTextField user_name_ans = new JTextField("Himanshu");
-        JTextField email_ans = new JTextField("gghimanshu333@gmail.com");
+        JTextField user_id_ans = new JTextField(admin_user_ID);
+        JTextField user_name_ans = new JTextField(admin_user_name);
+        JTextField email_ans = new JTextField(admin_user_email);
 
         user_id_ans.setEditable(false);
         user_name_ans.setEditable(false);
@@ -717,6 +754,7 @@ public class AdminUI{
 
 
 
+
         JButton add_return_record_button = new JButton("Add Record");
         add_return_record_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -796,6 +834,100 @@ public class AdminUI{
 
 
     }
+    
+    
+    public static void verifyUser() {
+        JFrame password_window = new JFrame();
+        password_window.setSize(300,300);
+        password_window.setLayout(new FlowLayout(FlowLayout.CENTER));
+        password_window.setVisible(true);
+        password_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        JPanel password_panel = new JPanel();
+        password_panel.setPreferredSize(new Dimension(200,100));
+        password_panel.setLayout(new GridLayout(3,2));
+
+        JLabel password_label = new JLabel("Password :");
+        JLabel email_label = new JLabel("Email : ");
+        JPasswordField password_input = new JPasswordField();
+        JTextField email_input = new JTextField();
+        JButton password_button = new JButton("Ok");
+
+        password_panel.add(email_label);
+        password_panel.add(email_input);
+        password_panel.add(password_label);
+        password_panel.add(password_input);
+        password_panel.add(password_button);
+        
+
+       
+        
+        password_button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+
+                 //getting users
+                Connection con = createConnection();
+                ArrayList<ArrayList<String>> all_users = getAllUsers(con);
+
+                String msg = "";
+                String temp_email = email_input.getText();
+                String temp_password = String.valueOf(password_input.getPassword());
+
+                boolean userFound = false;
+
+                //checking users 
+                for(int i = 0 ; i < all_users.size(); i++){
+                    if(all_users.get(i).get(2).equals(temp_email)){
+                        userFound = true;
+                        if(all_users.get(i).get(3).equals(temp_password)){
+                            admin_user_ID = all_users.get(i).get(0);
+                            admin_user_name = all_users.get(i).get(1);
+                            admin_user_email = all_users.get(i).get(2);
+                            password_window.dispose();
+                            createAdminUI();
+                        }else{
+                            msg = "invalid password";
+                            break;
+                        }
+                    }
+                }
+
+                //adding msg to window if any
+
+                if(!userFound){
+                    msg = "invalid Email";
+                }
+                
+                if(msg.length()> 0){
+                    // SwingUtilities.invokeLater(new Runnable() {
+                    //     public void run(){
+                    //         password_window.add(new Label(error_msg));
+                    //         password_window.validate();
+                    //         password_window.repaint();
+                    //     }
+                    // });
+                    password_window.add(new Label(msg));
+                    password_window.revalidate();
+                    password_window.repaint();
+                }
+            }
+
+        });
+        password_window.add(password_panel);
+
+    
+        // SwingUtilities.invokeLater(new Runnable() {
+        //     @Override
+        //     public void run(){
+        //         password_window.setVisible(true);
+        //     }
+        // });
+
+        
+        
+    }
+    
     public static void main(String[] args) {
              
     }
