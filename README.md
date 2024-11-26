@@ -2,5 +2,5 @@
 ```
 Under development right now
 ```
-![ijmg]("./assets/layer-1.png")
+![ijmg]("https://myoctocat.com/assets/images/base-octocat.svg")
 
