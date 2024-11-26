@@ -795,18 +795,6 @@ public class AdminUI{
         returnedAt_panel.add(sp_return);
 
 
-
-
-
-        //||_____________________________________EXIT__________________________________________||\\
-
-
-
-        
-
-
-
-
         //||_________________________________________TABBED PANE_______________________________||\\
 
         JTabbedPane tb = new JTabbedPane();
@@ -893,20 +881,13 @@ public class AdminUI{
                     }
                 }
 
-                //adding msg to window if any
 
                 if(!userFound){
                     msg = "invalid Email";
                 }
                 
                 if(msg.length()> 0){
-                    // SwingUtilities.invokeLater(new Runnable() {
-                    //     public void run(){
-                    //         password_window.add(new Label(error_msg));
-                    //         password_window.validate();
-                    //         password_window.repaint();
-                    //     }
-                    // });
+
                     password_window.add(new Label(msg));
                     password_window.revalidate();
                     password_window.repaint();
@@ -915,17 +896,7 @@ public class AdminUI{
 
         });
         password_window.add(password_panel);
-
-    
-        // SwingUtilities.invokeLater(new Runnable() {
-        //     @Override
-        //     public void run(){
-        //         password_window.setVisible(true);
-        //     }
-        // });
-
-        
-        
+     
     }
     
     public static void main(String[] args) {
